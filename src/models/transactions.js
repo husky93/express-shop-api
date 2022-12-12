@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const TransactionsSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'Users' },
+  user: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
   items: [
     {
       item: { type: Schema.Types.ObjectId, ref: 'Irems' },
