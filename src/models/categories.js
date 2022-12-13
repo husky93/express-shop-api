@@ -7,4 +7,4 @@ const CategoriesSchema = new Schema({
   description: { type: String, required: true },
 });
 
-module.exports = mongoose.model('Categories', CategoriesSchema);
+export default mongoose.model('Categories', CategoriesSchema);

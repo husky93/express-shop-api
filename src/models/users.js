@@ -9,4 +9,4 @@ const UserSchema = new Schema({
   address: { type: Schema.Types.ObjectId, ref: 'Address' },
 });
 
-module.exports = mongoose.model('Users', UserSchema);
+export default mongoose.model('Users', UserSchema);

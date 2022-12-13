@@ -10,4 +10,4 @@ const ItemsSchema = new Schema({
   num_in_stock: { type: Number, required: true },
 });
 
-module.exports = mongoose.model('Items', ItemsSchema);
+export default mongoose.model('Items', ItemsSchema);

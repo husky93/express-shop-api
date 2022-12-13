@@ -10,4 +10,4 @@ const AddressSchema = new Schema({
   house_num: { type: String, required: true, maxLength: 150 },
 });
 
-module.exports = mongoose.model('Address', AddressSchema);
+export default mongoose.model('Address', AddressSchema);

@@ -9,4 +9,4 @@ const ReviewsSchema = new Schema({
   description: String,
 });
 
-module.exports = mongoose.model('Reviews', ReviewsSchema);
+export default mongoose.model('Reviews', ReviewsSchema);
