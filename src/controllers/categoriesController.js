@@ -11,8 +11,13 @@ const getCategories = (req, res, next) => {
     });
 };
 
-const getCategory = (req, res) => {
-  res.json({ post: 'GET' });
+const getCategory = (req, res, next) => {
+  Categories.findById(req.params.categoryId).exec((err, category) => {
+    if (err) {
+      return next(err);
+    }
+    return res.json(category);
+  });
 };
 
 const postCategory = (req, res) => {
