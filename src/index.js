@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
-import routes from './routes';
 import mongoose from 'mongoose';
+import routes from './routes';
 
 const mongoDB = process.env.MONGODB_URL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });

@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/', itemsController.getItems);
 
-router.post('/', itemsController.postItems);
+router.post('/', itemsController.postItem);
 
 router.get('/:itemId', itemsController.getItem);
 

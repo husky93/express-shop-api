@@ -1,19 +1,36 @@
-exports.getCategories = (req, res) => {
-  res.json({ posts: 'YO' });
+import Categories from '../models/categories';
+
+const getCategories = (req, res, next) => {
+  Categories.find()
+    .sort([['title', 'ascending']])
+    .exec((err, categoriesList) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json(categoriesList);
+    });
 };
 
-exports.getCategory = (req, res) => {
+const getCategory = (req, res) => {
   res.json({ post: 'GET' });
 };
 
-exports.postCategory = (req, res) => {
+const postCategory = (req, res) => {
   res.json({ post: 'POSTED' });
 };
 
-exports.updateCategory = (req, res) => {
+const updateCategory = (req, res) => {
   res.json({ post: 'YO' });
 };
 
-exports.deleteCategory = (req, res) => {
+const deleteCategory = (req, res) => {
   res.json({ post: 'YO' });
+};
+
+export default {
+  getCategories,
+  getCategory,
+  postCategory,
+  updateCategory,
+  deleteCategory,
 };
