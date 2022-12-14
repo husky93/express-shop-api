@@ -42,7 +42,7 @@ const getItems = (req, res, next) => {
           return next(err);
         }
         if (results.length > 0) return res.json(results);
-        return res.status(400).json({ error: 'No items found.' });
+        return res.status(404).json({ error: 'No items found.' });
       }
     );
   } else {
@@ -53,13 +53,20 @@ const getItems = (req, res, next) => {
           return next(err);
         }
         if (itemsList.length > 0) return res.json(itemsList);
-        return res.status(400).json({ error: 'No items found.' });
+        return res.status(404).json({ error: 'No items found.' });
       });
   }
 };
 
 const getItem = (req, res) => {
-  res.json({ post: 'GET' });
+  Items.findById(req.params.itemId)
+    .populate('category')
+    .exec((err, item) => {
+      if (err) {
+        return res.status(404).json({ error: 'Item not found.' });
+      }
+      return res.json(item);
+    });
 };
 
 const postItem = (req, res) => {
