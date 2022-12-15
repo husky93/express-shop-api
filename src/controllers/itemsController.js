@@ -287,7 +287,15 @@ const updateReview = [
 ];
 
 const deleteReview = (req, res) => {
-  res.json({ post: 'YO' });
+  Reviews.findByIdAndDelete(req.params.reviewId).exec((err, review) => {
+    if (err) {
+      return res.status(400).json(err);
+    }
+    if (review == null) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    return res.json(review);
+  });
 };
 
 export default {
