@@ -197,10 +197,47 @@ const getReviews = (req, res) => {
     });
 };
 
-const postReview = (req, res) => {
-  res.json({ post: 'YO' });
-};
+const postReview = [
+  body('user')
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage('User ID must be specified.'),
+  body('item')
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage('Item ID must be specified'),
+  body('description')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Description must have at least 1 character.'),
+  body('rating')
+    .isInt({ min: 1, max: 5 })
+    .notEmpty()
+    .escape()
+    .withMessage('Rating must be a number between 1-5.'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors);
+    }
+    const review = new Reviews({
+      user: req.body.user,
+      item: req.body.item,
+      description: req.body.description,
+      rating: req.body.rating,
+    });
 
+    review.save((err, result) => {
+      if (err) {
+        return res.status(400).json(err);
+      }
+      return res.json(result);
+    });
+  },
+];
 const updateReview = (req, res) => {
   res.json({ post: 'YO' });
 };
