@@ -238,9 +238,53 @@ const postReview = [
     });
   },
 ];
-const updateReview = (req, res) => {
-  res.json({ post: 'YO' });
-};
+const updateReview = [
+  body('user')
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage('User ID must be specified.'),
+  body('item')
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage('Item ID must be specified'),
+  body('description')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Description must have at least 1 character.'),
+  body('rating')
+    .isInt({ min: 1, max: 5 })
+    .notEmpty()
+    .escape()
+    .withMessage('Rating must be a number between 1-5.'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors);
+    }
+    const review = new Reviews({
+      _id: req.params.reviewId,
+      user: req.body.user,
+      item: req.body.item,
+      description: req.body.description,
+      rating: req.body.rating,
+    });
+
+    Reviews.findByIdAndUpdate(
+      req.params.reviewId,
+      review,
+      {},
+      (err, updatedReview) => {
+        if (err) {
+          return res.status(404).json(err);
+        }
+        return res.json(review);
+      }
+    );
+  },
+];
 
 const deleteReview = (req, res) => {
   res.json({ post: 'YO' });
