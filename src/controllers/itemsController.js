@@ -120,9 +120,56 @@ const postItem = [
   },
 ];
 
-const updateItem = (req, res) => {
-  res.json({ post: 'YO' });
-};
+const updateItem = [
+  body('title')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Title must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Title must be maximum 150 characters.'),
+  body('description')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Message must have at least 1 character.'),
+  body('price')
+    .isNumeric()
+    .notEmpty()
+    .escape()
+    .withMessage('Enter a valid price.'),
+  body('num_in_stock')
+    .isInt()
+    .notEmpty()
+    .escape()
+    .withMessage('Enter a valid number.'),
+  body('category')
+    .notEmpty()
+    .escape()
+    .withMessage('Category must be specified'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors);
+    }
+
+    const item = new Items({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      num_in_stock: req.body.num_in_stock,
+      category: req.body.category,
+      _id: req.params.itemId,
+    });
+
+    Items.findByIdAndUpdate(req.params.itemId, item, {}, (err, updatedItem) => {
+      if (err) {
+        return res.status(404).json(err);
+      }
+      return res.json(item);
+    });
+  },
+];
 
 const deleteItem = (req, res) => {
   res.json({ post: 'YO' });
