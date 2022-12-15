@@ -1,5 +1,5 @@
-import { body, validationResult } from 'express-validator';
 import async from 'async';
+import { body, validationResult } from 'express-validator';
 import Categories from '../models/categories';
 import Items from '../models/items';
 
@@ -89,24 +89,34 @@ const postItem = [
     .escape()
     .withMessage('Enter a valid price.'),
   body('num_in_stock')
-    .isNumeric()
+    .isInt()
     .notEmpty()
     .escape()
     .withMessage('Enter a valid number.'),
-  body('category').escape(),
+  body('category')
+    .notEmpty()
+    .escape()
+    .withMessage('Category must be specified'),
   (req, res, next) => {
     const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors);
+    }
+
     const item = new Items({
-      name: req.body.name,
+      title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      num_in_stock: req.body.number_in_stock,
+      num_in_stock: req.body.num_in_stock,
       category: req.body.category,
     });
 
-    if (!errors.isEmpty()) {
-      res.status(400).json(errors);
-    }
+    item.save((err, result) => {
+      if (err) {
+        return res.status(400).json(err);
+      }
+      return res.json(result);
+    });
   },
 ];
 
