@@ -171,8 +171,16 @@ const updateItem = [
   },
 ];
 
-const deleteItem = (req, res) => {
-  res.json({ post: 'YO' });
+const deleteItem = (req, res, next) => {
+  Items.findByIdAndDelete(req.params.itemId).exec((err, item) => {
+    if (err) {
+      return res.status(400).json(err);
+    }
+    if (item == null) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+    return res.json(item);
+  });
 };
 
 const getReviews = (req, res) => {
