@@ -1,3 +1,4 @@
+import { body, validationResult } from 'express-validator';
 import async from 'async';
 import Categories from '../models/categories';
 import Items from '../models/items';
@@ -69,9 +70,45 @@ const getItem = (req, res) => {
     });
 };
 
-const postItem = (req, res) => {
-  res.json({ post: 'POSTED' });
-};
+const postItem = [
+  body('title')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Title must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Title must be maximum 150 characters.'),
+  body('description')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Message must have at least 1 character.'),
+  body('price')
+    .isNumeric()
+    .notEmpty()
+    .escape()
+    .withMessage('Enter a valid price.'),
+  body('num_in_stock')
+    .isNumeric()
+    .notEmpty()
+    .escape()
+    .withMessage('Enter a valid number.'),
+  body('category').escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    const item = new Items({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      num_in_stock: req.body.number_in_stock,
+      category: req.body.category,
+    });
+
+    if (!errors.isEmpty()) {
+      res.status(400).json(errors);
+    }
+  },
+];
 
 const updateItem = (req, res) => {
   res.json({ post: 'YO' });
