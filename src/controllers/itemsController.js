@@ -2,6 +2,8 @@ import async from 'async';
 import { body, validationResult } from 'express-validator';
 import Categories from '../models/categories';
 import Items from '../models/items';
+import Reviews from '../models/reviews';
+import Users from '../models/users';
 
 const getItems = (req, res, next) => {
   const { category } = req.query;
@@ -184,7 +186,15 @@ const deleteItem = (req, res, next) => {
 };
 
 const getReviews = (req, res) => {
-  res.json({ post: 'YO' });
+  Reviews.find({ item: req.params.itemId })
+    .populate({ path: 'user', model: Users })
+    .exec((err, reviewsList) => {
+      if (err) {
+        return res.status(400).json(err);
+      }
+      if (reviewsList.length > 0) return res.json(reviewsList);
+      return res.status(404).json({ error: 'No reviews found.' });
+    });
 };
 
 const postReview = (req, res) => {

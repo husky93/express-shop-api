@@ -1,7 +1,7 @@
 import 'dotenv/config';
+import mongoose from 'mongoose';
 import cors from 'cors';
 import express from 'express';
-import mongoose from 'mongoose';
 import routes from './routes';
 
 const mongoDB = process.env.MONGODB_URL;
