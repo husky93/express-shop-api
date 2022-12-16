@@ -13,6 +13,7 @@ const TransactionsSchema = new Schema({
   status: {
     type: String,
     enum: ['pending', 'delivered', 'payment failed', 'cancelled', 'paid'],
+    default: 'pending',
   },
 });
 

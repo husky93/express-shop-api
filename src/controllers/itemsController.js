@@ -251,9 +251,8 @@ const postReview = [
     });
 
     review.save((err, result) => {
-      if (err) {
-        return res.status(400).json(err);
-      }
+      if (err) return res.status(400).json(err);
+
       return res.json(result);
     });
   },
