@@ -49,7 +49,7 @@ const postCategory = [
 
     category.save((error, result) => {
       if (error) {
-        return res.status(500).json(errors);
+        return res.status(502).json(errors);
       }
       return res.json(result);
     });
@@ -90,7 +90,35 @@ const updateCategory = [
 ];
 
 const deleteCategory = (req, res) => {
-  res.json({ post: 'YO' });
+  async.waterfall(
+    [
+      function (callback) {
+        Items.find({ category: req.params.categoryId }).exec((err, result) => {
+          if (err) {
+            return callback(err, null);
+          }
+          callback(null, result);
+        });
+      },
+    ],
+    (err, results) => {
+      if (err) return res.status(404).json(err);
+
+      if (results && results.length > 0) {
+        return res.status(403).json({
+          error: 'Delete all items in this category before deleting category',
+        });
+      }
+      Categories.findByIdAndDelete(
+        req.params.categoryId,
+        {},
+        (error, result) => {
+          if (error) return res.status(404).json(err);
+          res.json(result);
+        }
+      );
+    }
+  );
 };
 
 export default {
