@@ -44,6 +44,9 @@ const postTransaction = [
     .notEmpty()
     .escape()
     .withMessage('User ID must be specified.'),
+  body('items')
+    .isArray({ min: 1 })
+    .withMessage('"items" key value must be an array with at least one value'),
   body('items.*.item')
     .trim()
     .notEmpty()
