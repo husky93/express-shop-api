@@ -6,13 +6,13 @@ const TransactionsSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
   items: [
     {
-      item: { type: Schema.Types.ObjectId, ref: 'Irems' },
+      item: { type: Schema.Types.ObjectId, ref: 'Items' },
       quantity: Number,
     },
   ],
   status: {
     type: String,
-    enum: ['pending', 'delivered', 'payment failed', 'cancelled'],
+    enum: ['pending', 'delivered', 'payment failed', 'cancelled', 'paid'],
   },
 });
 
