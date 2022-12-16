@@ -1,9 +1,7 @@
-import async from 'async';
 import { body, validationResult } from 'express-validator';
 import Transactions from '../models/transactions';
-import Users from '../models/users';
 
-exports.getTransactions = (req, res) => {
+const getTransactions = (req, res) => {
   const { user } = req.query;
   if (user) {
     Transactions.find({ user })
@@ -26,7 +24,7 @@ exports.getTransactions = (req, res) => {
   }
 };
 
-exports.getTransaction = (req, res) => {
+const getTransaction = (req, res) => {
   Transactions.findById(req.params.transactionId)
     .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
     .exec((err, transaction) => {
@@ -40,7 +38,7 @@ exports.getTransaction = (req, res) => {
     });
 };
 
-exports.postTransaction = [
+const postTransaction = [
   body('user')
     .trim()
     .notEmpty()
@@ -74,7 +72,7 @@ exports.postTransaction = [
     });
   },
 ];
-exports.updateTransaction = [
+const updateTransaction = [
   body('user')
     .trim()
     .notEmpty()
@@ -120,7 +118,7 @@ exports.updateTransaction = [
   },
 ];
 
-exports.deleteTransaction = (req, res) => {
+const deleteTransaction = (req, res) => {
   Transactions.findByIdAndDelete(req.params.transactionId).exec(
     (err, result) => {
       if (err) return res.status(400).json(err);
@@ -131,4 +129,12 @@ exports.deleteTransaction = (req, res) => {
       return res.json(result);
     }
   );
+};
+
+export default {
+  getTransaction,
+  getTransactions,
+  postTransaction,
+  updateTransaction,
+  deleteTransaction,
 };
