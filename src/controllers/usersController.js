@@ -118,7 +118,10 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  res.json({ users: 'YO' });
+  Users.findByIdAndDelete(req.params.userId, {}, (err, result) => {
+    if (err) return res.status(404).json(err);
+    return res.json(result);
+  });
 };
 
 export default {
