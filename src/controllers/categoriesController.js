@@ -56,9 +56,38 @@ const postCategory = [
   },
 ];
 
-const updateCategory = (req, res) => {
-  res.json({ post: 'YO' });
-};
+const updateCategory = [
+  body('title')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Title must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Title must be maximum 150 characters.'),
+  body('description')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Message must have at least 1 character.'),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors);
+    }
+    const category = new Categories({
+      _id: req.params.categoryId,
+      title: req.body.title,
+      description: req.body.description,
+    });
+
+    Categories.findByIdAndUpdate(req.params.categoryId, category, {}, (err) => {
+      if (err) {
+        return res.status(404).json(err);
+      }
+      return res.json(category);
+    });
+  },
+];
 
 const deleteCategory = (req, res) => {
   res.json({ post: 'YO' });
