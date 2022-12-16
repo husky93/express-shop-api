@@ -1,15 +1,22 @@
-exports.getUser = (req, res) => {
+const getUser = (req, res) => {
   res.json({ user: 'GET' });
 };
 
-exports.postUser = (req, res) => {
+const postUser = (req, res) => {
   res.json({ user: 'POSTED' });
 };
 
-exports.updateUser = (req, res) => {
+const updateUser = (req, res) => {
   res.json({ users: 'YO' });
 };
 
-exports.deleteUser = (req, res) => {
+const deleteUser = (req, res) => {
   res.json({ users: 'YO' });
+};
+
+export default {
+  getUser,
+  postUser,
+  updateUser,
+  deleteUser,
 };
