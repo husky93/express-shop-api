@@ -93,7 +93,15 @@ const updateTransaction = [
     .withMessage(
       'All items quantity in transaction need to be integer with min value of 1'
     ),
-  body('status').trim().notEmpty().escape().withMessage('Status not specified'),
+  body('status')
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage('Status not specified')
+    .isIn(['pending', 'delivered', 'payment failed', 'cancelled', 'paid'])
+    .withMessage(
+      'Status must be one of these values: pending, delivered, payment failed, cancelled, paid'
+    ),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -111,11 +119,11 @@ const updateTransaction = [
       transaction,
       {},
       (err, result) => {
-        if (err) return res.status(404).json(errors);
+        if (err) return res.status(404).json(err);
         if (result == null) {
           return res.status(404).json({ error: 'Transaction not found' });
         }
-        return res.json(result);
+        return res.json(transaction);
       }
     );
   },
