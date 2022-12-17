@@ -1,7 +1,11 @@
 import passport from 'passport';
+import passportJWT from 'passport-jwt';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcryptjs';
 import Users from './models/users';
+
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(
   new LocalStrategy((username, password, done) => {
@@ -23,4 +27,22 @@ passport.use(
       });
     });
   })
+);
+
+passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      secretOrKey: process.env.JWT_SECRET,
+    },
+    (jwtPayload, cb) =>
+      Users.findById(jwtPayload.id, (err, user) => {
+        if (err) {
+          return cb(err);
+        }
+        if (user) {
+          return cb(null, user);
+        }
+      })
+  )
 );
