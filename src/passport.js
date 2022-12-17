@@ -9,23 +9,25 @@ const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(
   new LocalStrategy((username, password, done) => {
-    Users.findOne({ username }, (err, user) => {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username' });
-      }
-      bcrypt.compare(password, user.password, (error, res) => {
-        if (error) {
-          return done(error);
+    Users.findOne({ username })
+      .select('+password')
+      .exec((err, user) => {
+        if (err) {
+          return done(err);
         }
-        if (res) {
-          return done(null, user, { message: 'Logged In Successfully' });
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username' });
         }
-        return done(null, false, { message: 'Incorrect password' });
+        bcrypt.compare(password, user.password, (error, res) => {
+          if (error) {
+            return done(error);
+          }
+          if (res) {
+            return done(null, user, { message: 'Logged In Successfully' });
+          }
+          return done(null, false, { message: 'Incorrect password' });
+        });
       });
-    });
   })
 );
 
@@ -46,3 +48,8 @@ passport.use(
       })
   )
 );
+
+export const checkIfAdmin = (req, res, next) => {
+  if (!req.user.isAdmin) return res.status(403).send('Access denied.');
+  next();
+};

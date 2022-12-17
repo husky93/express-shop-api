@@ -20,5 +20,6 @@ app.use('/transactions', routes.transactions);
 app.use('/categories', routes.categories);
 app.use('/items', routes.items);
 app.use('/user', routes.user);
+app.use('/auth', routes.auth);
 
 app.listen(3000, () => console.log('Blog API listening on port 3000!'));
