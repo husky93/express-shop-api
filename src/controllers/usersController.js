@@ -119,8 +119,10 @@ const updateUser = [
     .isLength({ min: 1 })
     .escape()
     .withMessage('Username must be specified.')
-    .isLength({ max: 40 })
-    .withMessage('Username can be maximum 40 characters.'),
+    .isLength({ max: 100 })
+    .withMessage('Username can be maximum 100 characters.')
+    .isEmail()
+    .withMessage('Username must be and email'),
   body('password')
     .isStrongPassword({
       minLength: 8,
