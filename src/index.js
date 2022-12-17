@@ -9,6 +9,7 @@ const mongoDB = process.env.MONGODB_URL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const port = process.env.$PORT || 3000;
 
 const app = express();
 
@@ -22,4 +23,4 @@ app.use('/items', routes.items);
 app.use('/user', routes.user);
 app.use('/auth', routes.auth);
 
-app.listen(3000, () => console.log('Blog API listening on port 3000!'));
+app.listen(port, () => console.log('Blog API listening on port 3000!'));
