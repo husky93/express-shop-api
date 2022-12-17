@@ -11,6 +11,7 @@ const UserSchema = new Schema({
     street: { type: String, required: true, maxLength: 150 },
     house_num: { type: String, required: true, maxLength: 150 },
   },
+  isAdmin: Boolean,
 });
 
 export default mongoose.model('Users', UserSchema);
