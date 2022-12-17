@@ -1,16 +1,35 @@
 import { Router } from 'express';
+import passport from 'passport';
 import transactionsController from '../controllers/transactionsController';
+import { checkIfAdmin } from '../passport';
 
 const router = Router();
 
-router.get('/', transactionsController.getTransactions);
+router.get('/', [
+  passport.authenticate('jwt', { session: false }),
+  transactionsController.getTransactions,
+]);
 
-router.post('/', transactionsController.postTransaction);
+router.post('/', [
+  passport.authenticate('jwt', { session: false }),
+  transactionsController.postTransaction,
+]);
 
-router.get('/:transactionId', transactionsController.getTransaction);
+router.get('/:transactionId', [
+  passport.authenticate('jwt', { session: false }),
+  transactionsController.getTransaction,
+]);
 
-router.put('/:transactionId', transactionsController.updateTransaction);
+router.put('/:transactionId', [
+  passport.authenticate('jwt', { session: false }),
+  checkIfAdmin,
+  transactionsController.updateTransaction,
+]);
 
-router.delete('/:transactionId', transactionsController.deleteTransaction);
+router.delete('/:transactionId', [
+  passport.authenticate('jwt', { session: false }),
+  checkIfAdmin,
+  transactionsController.deleteTransaction,
+]);
 
 export default router;
