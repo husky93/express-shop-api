@@ -1,8 +1,12 @@
 # express-members-only
 
 RESTful API for my Full-stack E-commerce website project with two separate frontends which you can see here:
-- [Store](https://github.com/husky93/ecommerce-store-frontend)
-- [Admin Dashboard](https://github.com/husky93/ecommerce-admin-frontend)
+<br />
+#### [Store](https://github.com/husky93/ecommerce-store-frontend)
+<br />
+#### [Admin Dashboard](https://github.com/husky93/ecommerce-admin-frontend)
+<br />
+<br />
 
 Made with [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/). [MongoDB](https://www.mongodb.com/) was used for a database along with [mongoose](https://mongoosejs.com/) ODM for modeling the application. [passport.js](https://www.passportjs.org/) along with [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) for JSON Web token generation and [bcryptjs](https://www.npmjs.com/package/bcryptjs) for password encryption.
 
@@ -26,7 +30,7 @@ Made with [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/
 
 ### Dependencies Used:
 - [Node.js](https://nodejs.org/en/)
-- [Express](https://expressjs.com/)(https://www.npmjs.com/package/jsonwebtoken)
+- [Express](https://expressjs.com/)
 - [mongoose](https://mongoosejs.com/)
 - [passport.js](https://www.passportjs.org/)
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
