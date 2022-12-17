@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import express from 'express';
 import routes from './routes';
+import './passport';
 
 const mongoDB = process.env.MONGODB_URL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
