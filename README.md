@@ -37,6 +37,7 @@ Made with [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [cors](https://expressjs.com/en/resources/middleware/cors.html)
 
-#### Dev dependencies:
+#### Dev dependencies and tools used:
 - [nodemon](https://www.npmjs.com/package/nodemon)
 - [babel](https://babeljs.io/)
+- [Postman](https://www.postman.com/)
