@@ -5,7 +5,7 @@ const postUserLogin = (req, res) => {
   passport.authenticate('local', { session: false }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        message: 'Something is not right',
+        message: 'Wrong Username / Password',
         user,
       });
     }
@@ -24,6 +24,16 @@ const postUserLogin = (req, res) => {
   })(req, res);
 };
 
+const getUserRefresh = (req, res) => {
+  return res.json({ message: 'test' });
+};
+
+const getUserLogout = (req, res) => {
+  return res.json({ message: 'test' });
+};
+
 export default {
   postUserLogin,
+  getUserRefresh,
+  getUserLogout,
 };
