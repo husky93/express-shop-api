@@ -36,6 +36,20 @@ const postUser = [
     .withMessage('Password can be be maximum 50 characters.')
     .trim()
     .escape(),
+  body('name')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Name must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Name can be maximum 150 characters.'),
+  body('surname')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Name must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Name can be maximum 150 characters.'),
   body('address.city')
     .trim()
     .isLength({ min: 1 })
@@ -96,6 +110,8 @@ const postUser = [
             const user = new Users({
               username: req.body.username,
               password: hashedPassword,
+              name: req.body.name,
+              surname: req.body.surname,
               address: req.body.address,
             });
             user.save((saveError, result) => {
@@ -139,6 +155,20 @@ const updateUser = [
     .trim()
     .escape()
     .optional(),
+  body('name')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Name must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Name can be maximum 150 characters.'),
+  body('surname')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Name must be specified.')
+    .isLength({ max: 150 })
+    .withMessage('Name can be maximum 150 characters.'),
   body('address.city')
     .trim()
     .isLength({ min: 1 })
@@ -215,6 +245,8 @@ const updateUser = [
             _id: req.params.userId,
             username: req.body.username,
             password,
+            name: req.body.name,
+            surname: req.body.surname,
             address: req.body.address,
           });
           Users.findByIdAndUpdate(
