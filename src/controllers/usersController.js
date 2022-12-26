@@ -20,7 +20,9 @@ const postUser = [
     .escape()
     .withMessage('Username must be specified.')
     .isLength({ max: 40 })
-    .withMessage('Username can be maximum 40 characters.'),
+    .withMessage('Username can be maximum 40 characters.')
+    .isEmail()
+    .withMessage('Username must be and email'),
   body('password')
     .isStrongPassword({
       minLength: 8,
