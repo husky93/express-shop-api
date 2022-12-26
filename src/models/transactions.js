@@ -17,4 +17,15 @@ const TransactionsSchema = new Schema({
   },
 });
 
+TransactionsSchema.virtual('total_price', {
+  ref: 'Items',
+  localField: 'items.*.item',
+  foreignField: '_id',
+}).get(function () {
+  return this.items.reduce(
+    (prevValue, obj) => prevValue + obj.item.price * obj.quantity,
+    0
+  );
+});
+
 export default mongoose.model('Transactions', TransactionsSchema);
