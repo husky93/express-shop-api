@@ -26,6 +26,7 @@ const getTransactions = (req, res) => {
 
 const getTransaction = (req, res) => {
   Transactions.findById(req.params.transactionId)
+    .populate('user')
     .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
     .exec((err, transaction) => {
       if (err) {
