@@ -109,6 +109,7 @@ const postItem = [
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
+      price_gross: req.body.price * 1.23,
       num_in_stock: req.body.num_in_stock,
       category: req.body.category,
     });
@@ -159,6 +160,7 @@ const updateItem = [
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
+      price_gross: req.body.price * 1.23,
       num_in_stock: req.body.num_in_stock,
       category: req.body.category,
       _id: req.params.itemId,
