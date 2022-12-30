@@ -90,6 +90,11 @@ const postItem = [
     .notEmpty()
     .escape()
     .withMessage('Enter a valid price.'),
+  body('margin')
+    .isNumeric({ min: 1, max: 100 })
+    .notEmpty()
+    .escape()
+    .withMessage('Enter a valid margin.'),
   body('num_in_stock')
     .isInt()
     .notEmpty()
@@ -104,12 +109,18 @@ const postItem = [
     if (!errors.isEmpty()) {
       return res.status(400).json(errors);
     }
+    const profit = req.body.price * (req.body.margin / 100);
+    const gross = (parseInt(req.body.price, 10) + profit) * 1.23;
+
+    console.log(gross, profit);
 
     const item = new Items({
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      price_gross: req.body.price * 1.23,
+      margin: req.body.margin,
+      profit: profit.toFixed(2),
+      price_gross: gross.toFixed(2),
       num_in_stock: req.body.num_in_stock,
       category: req.body.category,
     });
@@ -141,6 +152,11 @@ const updateItem = [
     .notEmpty()
     .escape()
     .withMessage('Enter a valid price.'),
+  body('margin')
+    .isNumeric({ min: 1, max: 100 })
+    .notEmpty()
+    .escape()
+    .withMessage('Enter a valid margin.'),
   body('num_in_stock')
     .isInt()
     .notEmpty()
@@ -155,12 +171,16 @@ const updateItem = [
     if (!errors.isEmpty()) {
       return res.status(400).json(errors);
     }
+    const profit = req.body.price * (req.body.margin / 100);
+    const gross = (parseInt(req.body.price, 10) + profit) * 1.23;
 
     const item = new Items({
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      price_gross: req.body.price * 1.23,
+      profit,
+      price_gross: gross,
+      margin: req.body.margin,
       num_in_stock: req.body.num_in_stock,
       category: req.body.category,
       _id: req.params.itemId,

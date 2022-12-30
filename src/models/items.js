@@ -8,6 +8,8 @@ const ItemsSchema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: 'Categories' },
   price: { type: Number, required: true },
   price_gross: Number,
+  profit: Number,
+  margin: { type: Number, required: true, min: 1, max: 100 },
   num_in_stock: { type: Number, required: true },
 });
 
