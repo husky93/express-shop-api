@@ -16,6 +16,7 @@ const getTransactions = (req, res) => {
     Transactions.find()
       .sort({ createdAt: -1 })
       .limit(10)
+      .populate('user')
       .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
       .exec((err, transactionList) => {
         if (err) {
