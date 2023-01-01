@@ -15,6 +15,7 @@ const TransactionsSchema = new Schema({
     enum: ['pending', 'delivered', 'payment failed', 'cancelled', 'paid'],
     default: 'pending',
   },
+  timestamp: { type: Date, default: Date.now() },
 });
 
 TransactionsSchema.virtual('total_price', {
