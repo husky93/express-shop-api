@@ -2,21 +2,23 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const TransactionsSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
-  items: [
-    {
-      item: { type: Schema.Types.ObjectId, ref: 'Items' },
-      quantity: Number,
+const TransactionsSchema = new Schema(
+  {
+    user: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
+    items: [
+      {
+        item: { type: Schema.Types.ObjectId, ref: 'Items' },
+        quantity: Number,
+      },
+    ],
+    status: {
+      type: String,
+      enum: ['pending', 'delivered', 'payment failed', 'cancelled', 'paid'],
+      default: 'pending',
     },
-  ],
-  status: {
-    type: String,
-    enum: ['pending', 'delivered', 'payment failed', 'cancelled', 'paid'],
-    default: 'pending',
   },
-  timestamp: { type: Date, default: Date.now() },
-});
+  { timestamps: true }
+);
 
 TransactionsSchema.virtual('total_price', {
   ref: 'Items',

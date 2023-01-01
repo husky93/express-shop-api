@@ -2,9 +2,20 @@ import { body, validationResult } from 'express-validator';
 import Transactions from '../models/transactions';
 
 const getTransactions = (req, res) => {
-  const { user } = req.query;
+  const { user, recent } = req.query;
   if (user) {
     Transactions.find({ user })
+      .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
+      .exec((err, transactionList) => {
+        if (err) {
+          return res.status(404).json(err);
+        }
+        return res.json(transactionList);
+      });
+  } else if (recent) {
+    Transactions.find()
+      .sort({ createdAt: -1 })
+      .limit(10)
       .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
       .exec((err, transactionList) => {
         if (err) {
