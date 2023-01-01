@@ -24,7 +24,7 @@ const getItems = (req, res, next) => {
         function (categoryData, callback) {
           if (categoryData) {
             const id = categoryData._id;
-            Items.find({ category: id })
+            Items.find({ category: id, deleted: false })
               .populate('category')
               .exec((err, itemsList) => {
                 if (err) {
@@ -49,7 +49,7 @@ const getItems = (req, res, next) => {
       }
     );
   } else {
-    Items.find()
+    Items.find({ deleted: false })
       .populate('category')
       .exec((err, itemsList) => {
         if (err) {
@@ -183,6 +183,7 @@ const updateItem = [
       margin: req.body.margin,
       num_in_stock: req.body.num_in_stock,
       category: req.body.category,
+      deleted: false,
       _id: req.params.itemId,
     });
 
@@ -199,15 +200,20 @@ const deleteItem = (req, res, next) => {
   async.parallel(
     [
       function (callback) {
-        Items.findByIdAndDelete(req.params.itemId).exec((err, item) => {
-          if (err) {
-            return res.status(400).json(err);
+        Items.findByIdAndUpdate(
+          req.params.itemId,
+          { deleted: true },
+          {},
+          (err, item) => {
+            if (err) {
+              return res.status(400).json(err);
+            }
+            if (item == null) {
+              return res.status(404).json({ error: 'Item not found' });
+            }
+            return callback(null, item);
           }
-          if (item == null) {
-            return res.status(404).json({ error: 'Item not found' });
-          }
-          return callback(null, item);
-        });
+        );
       },
       function (callback) {
         Reviews.deleteMany({ item: req.params.itemId }).exec((err, items) => {

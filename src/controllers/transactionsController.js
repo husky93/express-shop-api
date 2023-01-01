@@ -5,7 +5,10 @@ const getTransactions = (req, res) => {
   const { user, recent } = req.query;
   if (user) {
     Transactions.find({ user })
-      .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
+      .populate({
+        path: 'items',
+        populate: { path: 'item', model: 'Items' },
+      })
       .exec((err, transactionList) => {
         if (err) {
           return res.status(404).json(err);
@@ -17,7 +20,10 @@ const getTransactions = (req, res) => {
       .sort({ createdAt: -1 })
       .limit(10)
       .populate('user')
-      .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
+      .populate({
+        path: 'items',
+        populate: { path: 'item', model: 'Items' },
+      })
       .exec((err, transactionList) => {
         if (err) {
           return res.status(404).json(err);
@@ -26,7 +32,10 @@ const getTransactions = (req, res) => {
       });
   } else {
     Transactions.find()
-      .populate({ path: 'items', populate: { path: 'item', model: 'Items' } })
+      .populate({
+        path: 'items',
+        populate: { path: 'item', model: 'Items' },
+      })
       .exec((err, transactionList) => {
         if (err) {
           return res.status(404).json(err);

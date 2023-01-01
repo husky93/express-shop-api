@@ -11,6 +11,7 @@ const ItemsSchema = new Schema({
   profit: Number,
   margin: { type: Number, required: true, min: 1, max: 100 },
   num_in_stock: { type: Number, required: true },
+  deleted: { type: Boolean, required: true, default: false },
 });
 
 export default mongoose.model('Items', ItemsSchema);
