@@ -15,7 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'https://husky93.github.io/ecommerce-admin-frontend/',
+    origin: 'https://husky93.github.io',
     credentials: true,
   })
 );
