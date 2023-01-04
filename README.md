@@ -1,4 +1,4 @@
-# express-members-only
+# express-shop.-api
 
 RESTful API for my Full-stack E-commerce website project with two separate frontends which you can see here:
 <br />
