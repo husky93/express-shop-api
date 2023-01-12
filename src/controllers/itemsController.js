@@ -1,9 +1,13 @@
 import async from 'async';
 import { body, validationResult } from 'express-validator';
+import multer from 'multer';
 import Categories from '../models/categories';
 import Items from '../models/items';
 import Reviews from '../models/reviews';
 import Users from '../models/users';
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const getItems = (req, res, next) => {
   const { category } = req.query;
@@ -73,6 +77,7 @@ const getItem = (req, res) => {
 };
 
 const postItem = [
+  upload.single('cover_img'),
   body('title')
     .trim()
     .isLength({ min: 1 })
@@ -85,6 +90,14 @@ const postItem = [
     .isLength({ min: 1 })
     .escape()
     .withMessage('Message must have at least 1 character.'),
+  body('cover_img')
+    .custom((value, { req }) => {
+      if (req.file.mimetype === 'image/jpeg') {
+        return '.jpg';
+      }
+      return false;
+    })
+    .withMessage('Please only submit jpg images.'),
   body('price')
     .isNumeric()
     .notEmpty()

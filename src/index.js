@@ -15,7 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'https://husky93.github.io',
+    origin: 'http://localhost:5173',
     credentials: true,
   })
 );
