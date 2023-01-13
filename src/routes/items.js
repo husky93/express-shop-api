@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import itemsController from '../controllers/itemsController';
+import fileController from '../controllers/fileController';
 import { checkIfAdmin } from '../passport';
 
 const router = Router();
@@ -10,6 +11,7 @@ router.get('/', itemsController.getItems);
 router.post('/', [
   passport.authenticate('jwt', { session: false }),
   checkIfAdmin,
+  fileController.upload,
   itemsController.postItem,
 ]);
 
@@ -18,6 +20,7 @@ router.get('/:itemId', itemsController.getItem);
 router.put('/:itemId', [
   passport.authenticate('jwt', { session: false }),
   checkIfAdmin,
+  fileController.upload,
   itemsController.updateItem,
 ]);
 
