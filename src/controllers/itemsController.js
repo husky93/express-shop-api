@@ -1,13 +1,10 @@
 import async from 'async';
+import path from 'path';
 import { body, validationResult } from 'express-validator';
-import multer from 'multer';
 import Categories from '../models/categories';
 import Items from '../models/items';
 import Reviews from '../models/reviews';
 import Users from '../models/users';
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 const getItems = (req, res, next) => {
   const { category } = req.query;
@@ -77,7 +74,6 @@ const getItem = (req, res) => {
 };
 
 const postItem = [
-  upload.single('cover_img'),
   body('title')
     .trim()
     .isLength({ min: 1 })
@@ -90,14 +86,6 @@ const postItem = [
     .isLength({ min: 1 })
     .escape()
     .withMessage('Message must have at least 1 character.'),
-  body('cover_img')
-    .custom((value, { req }) => {
-      if (req.file.mimetype === 'image/jpeg') {
-        return '.jpg';
-      }
-      return false;
-    })
-    .withMessage('Please only submit jpg images.'),
   body('price')
     .isNumeric()
     .notEmpty()
@@ -117,7 +105,7 @@ const postItem = [
     .notEmpty()
     .escape()
     .withMessage('Category must be specified'),
-  (req, res, next) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json(errors);
@@ -125,11 +113,12 @@ const postItem = [
     const profit = req.body.price * (req.body.margin / 100);
     const gross = (parseInt(req.body.price, 10) + profit) * 1.23;
 
-    console.log(gross, profit);
-
     const item = new Items({
       title: req.body.title,
       description: req.body.description,
+      cover_img: `https://express-shop-api-production.up.railway.app/images/${
+        req.newFileName + path.extname(req.file.originalname)
+      }`,
       price: req.body.price,
       margin: req.body.margin,
       profit: profit.toFixed(2),
@@ -191,6 +180,11 @@ const updateItem = [
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
+      cover_img: req.newFileName
+        ? `https://express-shop-api-production.up.railway.app/images/${
+            req.newFileName + path.extname(req.file.originalname)
+          }`
+        : req.oldImageLink,
       profit,
       price_gross: gross,
       margin: req.body.margin,
