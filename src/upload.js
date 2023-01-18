@@ -21,7 +21,7 @@ const uploadFile = multer({
   storage,
   limits: { fileSize: MAX_SIZE },
   fileFilter: (req, file, cb) => {
-    const acceptableExtensions = ['png', 'jpg', 'jpeg', 'jpg'];
+    const acceptableExtensions = ['png', 'jpg', 'jpeg', 'jpg', 'webp'];
     if (
       !acceptableExtensions.some(
         (extension) =>
