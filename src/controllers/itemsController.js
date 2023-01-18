@@ -110,6 +110,9 @@ const postItem = [
     if (!errors.isEmpty()) {
       return res.status(400).json(errors);
     }
+    if (req.file === undefined) {
+      return res.status(400).json({ message: 'Please upload an image!' });
+    }
     const profit = req.body.price * (req.body.margin / 100);
     const gross = (parseInt(req.body.price, 10) + profit) * 1.23;
 
