@@ -13,14 +13,12 @@ const getItems = (req, res, next) => {
     async.waterfall(
       [
         function (callback) {
-          Categories.findOne({ title: category.toLowerCase() }).exec(
-            (err, categoryData) => {
-              if (err) {
-                return callback(err, null);
-              }
-              return callback(null, categoryData);
+          Categories.findOne({ _id: category }).exec((err, categoryData) => {
+            if (err) {
+              return callback(err, null);
             }
-          );
+            return callback(null, categoryData);
+          });
         },
         function (categoryData, callback) {
           if (categoryData) {
